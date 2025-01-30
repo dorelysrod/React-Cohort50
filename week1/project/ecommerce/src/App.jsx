@@ -11,12 +11,14 @@ const App = () => {
 
   useEffect(() => {
     if (activeCategory) {
+      // Remove "FAKE:" from the selected category for filtering
+      const cleanedActiveCategory = activeCategory.replace("FAKE:", "").trim();
       const filtered = allProducts.filter(
-        (product) => product.category === activeCategory
+        (product) => product.category.toLowerCase() === cleanedActiveCategory.toLowerCase()
       );
       setFilteredProducts(filtered);
     } else {
-      setFilteredProducts(allProducts);
+      setFilteredProducts(allProducts); 
     }
   }, [activeCategory]);
 
