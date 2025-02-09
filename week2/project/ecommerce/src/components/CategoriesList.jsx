@@ -13,14 +13,9 @@ const CategoryList = ({ filterProducts, selectedCategory }) => {
         if (!res.ok) throw new Error("Something went wrong while loading data");
         return res.json();
       })
-      .then((data) => {
-        setCategories(Array.isArray(data) ? data : []); 
-        setLoading(false);
-      })
-      .catch(() => {
-        setError("Failed to load categories");
-        setLoading(false);
-      });
+      .then((data) => setCategories(Array.isArray(data) ? data : []))
+      .catch(() => setError("Failed to load categories"))
+      .finally(() => setLoading(false));
   }, []);
 
   if (loading) return <Spinner />; 

@@ -4,13 +4,13 @@
     gap: 10px;
     margin-bottom: 20px;
     padding: 10px;
-    background-color: #f8f8f8;
+    background-color: rgb(255, 255, 255) ;
     border-radius: 5px;
   }
   
   .category-item {
     padding: 10px 20px;
-    background-color: #dcdcdc;
+    background-color: rgb(233, 225, 225) ;
     cursor: pointer;
     border-radius: 5px;
     text-align: center;
@@ -20,12 +20,12 @@
   }
   
   .category-item:hover {
-    background-color: #a0a0a0;
+    background-color: rgb(140, 140, 140) ;;
     transform: scale(1.05);
   }
   
   .category-item.active {
-    background-color: #a0a0a0;
+    background-color: rgb(140, 140, 140) ;
     font-weight: bold;
   }
   

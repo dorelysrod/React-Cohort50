@@ -1,8 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState } from 'react';
-import ProductList from './components/ProductsList';
-import CategoryList from './components/CategoriesList';
 import ProductDetail from './components/ProductDetail';
+import HomePage from "./components/HomePage";
 import './App.css';
 
 function App() {
@@ -15,15 +14,7 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={
-              <>
-                <CategoryList
-                  filterProducts={setSelectedCategory}
-                  selectedCategory={selectedCategory}
-                />
-                <ProductList selectedCategory={selectedCategory} />
-              </>
-            }
+            element={<HomePage selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />}
           />
           <Route path="/product/:id" element={<ProductDetail />} />
         </Routes>
