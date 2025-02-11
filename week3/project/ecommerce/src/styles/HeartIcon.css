@@ -1,0 +1,25 @@
+.product-item {
+  position: relative; 
+  padding: 20px;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.favorite-btn {
+  position: absolute;
+  top: 10px; 
+  left: 10px; 
+  font-size: 24px;
+  color: rgb(255, 0, 0);
+  cursor: pointer;
+  z-index: 10;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.favorite-btn:hover {
+  opacity: 0.8;
+}
