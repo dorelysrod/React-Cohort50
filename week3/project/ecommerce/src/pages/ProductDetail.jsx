@@ -1,13 +1,12 @@
 import { useParams } from "react-router-dom";
-import Spinner from "../components/Spinner";
 import useFetch from "../hooks/useFetch";
-import "../styles/ProductDetail.css";
+import Spinner from "../components/Spinner";
+import HeartIcon from "../components/HeartIcon";
+import "../styles/ProductDetail.css"; 
 
 const ProductDetail = () => {
   const { id } = useParams();
-  const { data: product, loading, error } = useFetch(
-    `https://fakestoreapi.com/products/${id}`
-  );
+  const { data: product, loading, error } = useFetch(`https://fakestoreapi.com/products/${id}`);
 
   if (loading) return <Spinner />;
   if (error) return <p className="error">Error: {error}</p>;
@@ -19,8 +18,11 @@ const ProductDetail = () => {
       <h2 className="product-title">{product.title}</h2>
       <p className="product-description">{product.description}</p>
       <p className="product-price">${product.price}</p>
+      <HeartIcon productId={product.id} />
     </div>
   );
 };
 
 export default ProductDetail;
+
+

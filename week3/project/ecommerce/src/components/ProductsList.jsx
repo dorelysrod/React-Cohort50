@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import Spinner from "../components/Spinner";
 import useFetch from "../hooks/useFetch";
+import HeartIcon from "../components/HeartIcon";
+import Spinner from "../components/Spinner";
 import "../styles/ProductList.css";
 
 const ProductList = ({ selectedCategory }) => {
@@ -13,18 +14,14 @@ const ProductList = ({ selectedCategory }) => {
 
   if (loading) return <Spinner />;
   if (error) return <p className="error">Error: {error}</p>;
-  if (!products || products.length === 0) return <p className="error">No products found</p>;
 
   return (
-    <div id="product-list" className="product-list">
+    <div className="product-list">
       {products.map((product) => (
-        <div
-          key={product.id}
-          className="product-item"
-          onClick={() => navigate(`/product/${product.id}`)}
-        >
+        <div key={product.id} className="product-item" onClick={() => navigate(`/product/${product.id}`)}>
+          <HeartIcon productId={product.id} />
           <img src={product.image} alt={product.title} className="product-image" />
-          <h3 className="product-name">{product.title}</h3>
+          <h3 className="product-title">{product.title}</h3>
           <p className="product-price">${product.price}</p>
         </div>
       ))}

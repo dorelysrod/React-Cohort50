@@ -1,46 +1,51 @@
-import HeartIcon from "../components/HeartIcon";
+import { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
-import useFavorite from "../hooks/useFavorite";
+import HeartIcon from "../components/HeartIcon";
 import Spinner from "../components/Spinner";
-import "../styles/ProductDetail.css"; 
+import "../styles/ProductList.css";
+import { useFavorite } from "../hooks/useFavorite";
 
 const FavoritePage = () => {
-  const { favorites } = useFavorite(); 
-  
-  const { data: allProducts, loading, error } = useFetch(
-    `https://fakestoreapi.com/products`
-  );
+  const navigate = useNavigate();
+  const { favorites } = useFavorite();
 
-  if (favorites.length === 0) {
-    return <p className="no-favorites">No products favorited yet.</p>;
+  if (!favorites || favorites.length === 0) {
+    return <p>No favorite products yet.</p>;
   }
 
-  const favoriteProducts = allProducts?.filter((product) =>
-    favorites.includes(product.id)
+  const productUrls = useMemo(
+    () => favorites.map((id) => `https://fakestoreapi.com/products/${id}`),
+    [favorites]
   );
 
+  const { data: products, loading, error } = useFetch(productUrls);
+
   if (loading) return <Spinner />;
-  if (error) return <p className="error">Error: {error}</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="favorites-page">
-      <h2>Your Favorite Products</h2>
-      <div className="favorites-list">
-        {favoriteProducts.map((product) => (
-          <div key={product.id} className="favorite-item">
+    <div className="product-list">
+      {products.length > 0 ? (
+        products.map((product) => (
+          <div
+            key={product.id}
+            className="product-item"
+            onClick={() => navigate(`/product/${product.id}`)}
+          >
+            <HeartIcon productId={product.id} />
             <img
               src={product.image}
               alt={product.title}
-              className="favorite-product-image"
+              className="product-image"
             />
-            <div className="favorite-product-info">
-              <h3 className="favorite-product-name">{product.title}</h3>
-              <p className="favorite-product-price">${product.price}</p>
-              <HeartIcon productId={product.id} />
-            </div>
+            <h3 className="product-title">{product.title}</h3>
+            <p className="product-price">${product.price}</p>
           </div>
-        ))}
-      </div>
+        ))
+      ) : (
+        <p>No favorite products found.</p>
+      )}
     </div>
   );
 };

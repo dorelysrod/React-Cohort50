@@ -3,18 +3,23 @@ import HomePage from "../pages/HomePage";
 import ProductDetail from "../pages/ProductDetail";
 import FavoritesPage from "../pages/FavoritePage";  
 import useFetch from "../hooks/useFetch";
+import Spinner from "../components/Spinner";  
+import "../styles/Navbar.css"; 
+
 
 function AppRoutes() {
   const { data: categories, loading, error } = useFetch("https://fakestoreapi.com/products/categories");
 
+  if (loading) return <Spinner />;
+  if (error) return <p className="error">Error: {error}</p>;
+
   return (
     <>
-      <nav>
-        <Link to="/">Home</Link>
-        <Link to="/favorites">Favorites</Link>
+      <nav className="navbar">
+        <Link to="/" className="navbar-link">Home</Link>
+        <Link to="/favorites" className="navbar-link">Favorites</Link>
       </nav>
-      {loading && <p>Loading categories...</p>}
-      {error && <p>Error loading categories</p>}
+
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/product/:id" element={<ProductDetail />} />

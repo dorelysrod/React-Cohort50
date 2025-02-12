@@ -1,46 +1,37 @@
 import { useState, useEffect } from "react";
 
-function useFetch(url) {
-  const [data, setData] = useState(null);
+const useFetch = (urls) => {
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!url) return;
+    if (!urls || urls.length === 0) {
+      setLoading(false);
+      return;
+    }
 
     const fetchData = async () => {
       setLoading(true);
       setError(null);
-
       try {
-        let responseData;
-
-        if (Array.isArray(url)) {
-          const responses = await Promise.all(url.map((singleUrl) => fetch(singleUrl)));
-          
-          const isSuccess = responses.every((response) => response.ok);
-          if (!isSuccess) throw new Error('One or more requests failed');
-
-          responseData = await Promise.all(responses.map((res) => res.json()));
-        } else {
-          const response = await fetch(url);
-          if (!response.ok) throw new Error('Failed to fetch data');
-          responseData = await response.json();
-        }
-
+        let responseData = Array.isArray(urls)
+          ? await Promise.all(urls.map((url) => fetch(url).then((res) => res.json())))
+          : await fetch(urls).then((res) => res.json());
+        
         setData(responseData);
-      } catch (err) {
-        console.error('Fetch Error: ', err);
-        setError(err.message || 'Something went wrong');
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setError("Failed to fetch data");
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [url]);
+  }, [urls]);
 
   return { data, loading, error };
-}
+};
 
 export default useFetch;

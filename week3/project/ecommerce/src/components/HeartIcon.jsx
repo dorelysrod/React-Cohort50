@@ -1,20 +1,31 @@
-import { FaHeart, FaRegHeart } from 'react-icons/fa';
-import useFavorite from '../hooks/useFavorite'; 
+import { useState, useEffect } from "react";
+import { useFavorite } from "../hooks/useFavorite";
+import heartRegular from "../assets/heart-regular.svg";  
+import heartSolid from "../assets/heart-solid.svg";  
 
-function HeartIcon({ productId }) {
+const FavoriteButton = ({ productId }) => {
   const { favorites, toggleFavorite } = useFavorite();
-  const isFavorited = favorites.includes(productId);
+  const [favorite, setFavorite] = useState(favorites.includes(productId));
 
-  const handleClick = () => {
-    toggleFavorite(productId);
+  useEffect(() => {
+    setFavorite(favorites.includes(productId));  
+  }, [favorites, productId]);
+
+  const handleClick = (event) => {
+    event.stopPropagation(); 
+    toggleFavorite(productId);  
   };
 
   return (
-    <button onClick={handleClick} className="favorite-btn">
-      {isFavorited ? <FaHeart size={24} color="black" /> : <FaRegHeart size={24} color="black" />}
+    <button onClick={handleClick} className="favorite-button">
+      <img
+        src={favorite ? heartSolid : heartRegular}
+        alt="Favorite icon"
+        className="favorite-icon"
+      />
     </button>
   );
-}
+};
 
-export default HeartIcon;
+export default FavoriteButton;
 
