@@ -20,7 +20,7 @@ body {
   }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 480px) {
   .product-list {
     grid-template-columns: 1fr;
   }

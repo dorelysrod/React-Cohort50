@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { FavoriteContext } from "./FavoriteContext";
 
 export const FavoriteProvider = ({ children }) => {
@@ -20,19 +20,21 @@ export const FavoriteProvider = ({ children }) => {
     }
   }, []);
 
-  const toggleFavorite = (productId) => {
+  const toggleFavorite = useCallback((productId) => {
     try {
-      let updatedFavorites = favorites.includes(productId)
-        ? favorites.filter((id) => id !== productId)
-        : [...favorites, productId];
-      setFavorites(updatedFavorites);
-      sessionStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+      setFavorites((prevFavorites) => {
+        let updatedFavorites = prevFavorites.includes(productId)
+          ? prevFavorites.filter((id) => id !== productId)
+          : [...prevFavorites, productId];
+
+        sessionStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+        return updatedFavorites;
+      });
     } catch (error) {
       console.error("Error updating favorites:", error);
     }
-  };
-
-  const value = useMemo(() => ({ favorites, toggleFavorite }), [favorites]);
+  }, []);
+  const value = { favorites, toggleFavorite };
 
   return (
     <FavoriteContext.Provider value={value}>{children}</FavoriteContext.Provider>

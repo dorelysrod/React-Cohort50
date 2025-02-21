@@ -9,17 +9,18 @@ import { useFavorite } from "../hooks/useFavorite";
 const FavoritePage = () => {
   const navigate = useNavigate();
   const { favorites } = useFavorite();
-
-  if (!favorites || favorites.length === 0) {
-    return <p>No favorite products yet.</p>;
-  }
-
   const productUrls = useMemo(
     () => favorites.map((id) => `https://fakestoreapi.com/products/${id}`),
     [favorites]
   );
 
   const { data: products, loading, error } = useFetch(productUrls);
+
+  if (!favorites || favorites.length === 0) {
+    return <p>No favorite products yet.</p>;
+  }
+
+
 
   if (loading) return <Spinner />;
   if (error) return <p>Error: {error}</p>;
